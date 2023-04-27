@@ -29,7 +29,9 @@
 
 ## Steps to Reproduce
 1. Clone this repo
-2. 
+2. Get API username and key from kaggle.com 
+    For more information visit: https://github.com/JovianHQ/opendatasets/blob/master/README.md#kaggle-credentials
+3. Run the 'final_report.ipynb' notebook
 
 ## Takeaways
 -
