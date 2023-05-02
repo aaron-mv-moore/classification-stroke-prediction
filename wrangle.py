@@ -146,7 +146,7 @@ def split_data(df, stratify_on='stroke'):
                 stratify = df[stratify_on])
         
          # splitting train_validate 70/30 with the target used for stratification
-        train, validate = train_test_split(train_validate, train_size=.7, stratify=train_validate[stratify_on])
+        train, validate = train_test_split(train_validate, train_size=.7, stratify=train_validate[stratify_on], random_state = 1017)
     # for all other targets
     else:
         # inform user that there is no stratification
@@ -156,7 +156,7 @@ def split_data(df, stratify_on='stroke'):
         train_validate, test = train_test_split(df, train_size=.8, random_state = 1017)
         
         # splitting train_validate 70/30
-        train, validate = train_test_split(train_validate, train_size=.7)
+        train, validate = train_test_split(train_validate, train_size=.7, random_state=1017)
     
     return train, validate, test
 

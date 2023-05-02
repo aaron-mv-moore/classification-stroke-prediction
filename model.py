@@ -121,6 +121,10 @@ def preprocess():
     # exit function and return all preprocessed datasets
     return X_train, y_train, X_resample, y_resample, X_validate, y_validate, X_test, y_test
 
+
+#### NEW
+#### predictions with resampled data
+
 #### predictions with resampled data
 
 def predictions(x_set,y_set, X_validate, y_validate):
@@ -145,19 +149,33 @@ def predictions(x_set,y_set, X_validate, y_validate):
     conf_mat.append(confusion_matrix(y_validate,y_preds))
 
     
+    # intitializing different classifiers
+    clf1 = SVC(random_state=random_state, probability=True)
+    clf2 = GradientBoostingClassifier(random_state=random_state)
+    clf3 = LogisticRegression(random_state = random_state)
+    clf4 = LogisticRegression(C=.25, random_state = random_state)
+    clf5 = LogisticRegression(C=.5, random_state = random_state)
+
+    # initializing voting classifier with top three classifiers from above
+    eclf = VotingClassifier(estimators=[
+        ('svc', clf1),('gbc', clf2), ('lr', clf3), ('lr.5', clf4), ('lr.25', clf5)])
+    
+    
     # initialize classifier list
     classifiers = []
     
     # adding classification models to be used
-    classifiers.append(SVC(random_state=random_state))
-    classifiers.append(GradientBoostingClassifier(random_state=random_state))
-    classifiers.append(LogisticRegression(random_state = random_state))
+    classifiers.append(clf1)
+    classifiers.append(clf2)
+    classifiers.append(clf3)    
+    classifiers.append(clf4)
+    classifiers.append(clf5)
+    classifiers.append(eclf)
     
     # for each classification method in the list
-    for classifier in classifiers:
+    for clf in classifiers:
         
-        # initiliaze classifier and fit
-        clf = classifier
+        # fit classifier
         clf.fit(x_set,y_set)
         
         # assign predictions to variable
@@ -179,13 +197,94 @@ def predictions(x_set,y_set, X_validate, y_validate):
                                "Algorithm":["Baseline",
                                             "SVC",
                                             "GradientBoosting",
-                                            "LogisticRegression"]})
+                                            "LogisticRegression",
+                                            "LR C=.25",
+                                            "LR C=.5",
+                                            "VotingClassifier"]})
                                      
     # sorting algorithm name alphabetically and setting index to the algorithm name 
     results_df = results_df.sort_values(by = 'Algorithm').set_index('Algorithm')
     
     # exit function and return df
     return results_df
+
+#### predictions with resampled data NEW
+
+# def predictions(x_set,y_set, X_validate, y_validate):
+#     '''
+#     Actions: Gets dataframe with evaluation scores for SVC, GradientBoost, and LogisticRegression classifiers
+#     '''
+    
+#     # initialize lists to hold metrics
+#     accuracy,precision,recall,f1,conf_mat= [],[],[],[],[]
+    
+#     # set a random state
+#     random_state = 1017
+    
+#     # set baseline predictions
+#     y_preds = np.zeros(len(X_validate)).astype(int)
+
+#     # adding metrics for baseline
+#     accuracy.append((round(accuracy_score(y_validate,y_preds),2))*100)
+#     precision.append((round(precision_score(y_validate,y_preds),2))*100)
+#     recall.append((round(recall_score(y_validate,y_preds),2))*100)
+#     f1.append((round(f1_score(y_validate,y_preds),2))*100)
+#     conf_mat.append(confusion_matrix(y_validate,y_preds))
+
+    
+#     # intitializing different classifiers
+#     clf1 = SVC(random_state=random_state, probability=True)
+#     clf2 = GradientBoostingClassifier(random_state=random_state)
+#     clf3 = LogisticRegression(random_state = random_state)
+
+#     # initializing voting classifier with top three classifiers from above
+#     eclf = VotingClassifier(estimators=[
+#         ('svc', clf1), ('gbc', clf2), ('lr', clf3)])
+    
+    
+#     # initialize classifier list
+#     classifiers = []
+    
+#     # adding classification models to be used
+#     classifiers.append(clf1)
+#     classifiers.append(clf2)
+#     classifiers.append(clf3)
+#     classifiers.append(eclf)
+    
+#     # for each classification method in the list
+#     for clf in classifiers:
+        
+#         # fit classifier
+#         clf.fit(x_set,y_set)
+        
+#         # assign predictions to variable
+#         y_preds = clf.predict(X_validate)
+        
+#         # appending the metrics to each repsective metric list
+#         accuracy.append((round(accuracy_score(y_validate,y_preds),2))*100)
+#         precision.append((round(precision_score(y_validate,y_preds),2))*100)
+#         recall.append((round(recall_score(y_validate,y_preds),2))*100)
+#         f1.append((round(f1_score(y_validate,y_preds),2))*100)
+#         conf_mat.append(confusion_matrix(y_validate,y_preds))
+
+#     # creating a dataframe with the metrics from the list and each algorithm name
+#     results_df = pd.DataFrame({"Recall Score":recall,
+#                                "Accuracy Score":accuracy,
+#                                "Precision Score":precision,
+#                                "f1 Score":f1,
+#                                "Confusion Matrix":conf_mat,
+#                                "Algorithm":["Baseline",
+#                                             "SVC",
+#                                             "GradientBoosting",
+#                                             "LogisticRegression",
+#                                             "VotingClassifier"]})
+                                     
+#     # sorting algorithm name alphabetically and setting index to the algorithm name 
+#     results_df = results_df.sort_values(by = 'Algorithm').set_index('Algorithm')
+    
+#     # exit function and return df
+#     return results_df
+
 
 # voting classifier
 def voting_predictions(X_train, y_train, X_validate, y_validate):
@@ -195,14 +294,16 @@ def voting_predictions(X_train, y_train, X_validate, y_validate):
     # setting random state
     random_state = 1017
     
-    # intitializing different classifiers
+ # intitializing different classifiers
     clf1 = SVC(random_state=random_state, probability=True)
     clf2 = GradientBoostingClassifier(random_state=random_state)
     clf3 = LogisticRegression(random_state = random_state)
+    clf4 = LogisticRegression(C=.25, random_state = random_state)
+    clf5 = LogisticRegression(C=.5, random_state = random_state)
 
     # initializing voting classifier with top three classifiers from above
     eclf = VotingClassifier(estimators=[
-        ('svc', clf1), ('lr', clf3), ('gbc', clf2)])
+        ('svc', clf1),('gbc', clf2), ('lr', clf3), ('lr.5', clf4), ('lr.25', clf5)])
 
     # fitting the model on the resampled train data
     eclf.fit(X_train, y_train)
