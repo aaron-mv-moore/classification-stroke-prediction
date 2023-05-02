@@ -39,10 +39,10 @@
 
 ## Steps to Reproduce
 1. Clone this repo
-2. Get API username and key from kaggle.com 
-    For more information visit: https://github.com/JovianHQ/opendatasets/blob/master/README.md#kaggle-credentials
-3. Store kaggle.json file in the same directory as the notebook
-4. Run the 'final_report.ipynb' notebook
+2. Go to https://kaggle.com/me/account (sign in if required).
+3. Scroll down to the "API" section and click "Create New API Token". This will download a file kaggle.json 
+4. Move kaggle.json file to the same directory/folder as the 'final_report.ipynb' notebook
+5. Run the 'final_report.ipynb' notebook
 
 ## Takeaways
 * Stroke represented roughly 5% of the data which influenced the decision to oversample to accomodate for an imbalanced dataset
