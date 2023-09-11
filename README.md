@@ -1,7 +1,7 @@
 # Stroke Prediction
 
 ## Description
-- Data science and health is a field that increasingly merges as time goes one. This project is a glimpse at the capability machine learning models have in predicting stroke risk. The files in this repo contain the work, modules, and report that walks through the data science pipeline, resulting in a classification model used to predist stroke risk with a 74% recall.
+- Data science and health is a field that increasingly merges as time goes on. This project is a glimpse at the capability machine learning models have in predicting stroke risk. The files in this repo contain the work, modules, and report that walks through the data science pipeline, resulting in a classification model used to predist stroke risk with a 74% recall.
 
 ## Goals
 - The project aims to create a model that identifies individuals with a high risk of stroke based on stroke data. 
@@ -45,10 +45,10 @@
 5. Run the 'final_report.ipynb' notebook
 
 ## Takeaways
-* Stroke represented roughly 5% of the data which influenced the decision to oversample to accomodate for an imbalanced dataset
+* Stroke represented roughly 5% of the data which influenced the decision to oversample to accomodate an imbalanced dataset
 * Demographically, only age had a significant relationship to stroke, while gender's independence could not be rejected
 * Average blood sugar level was found to have a statistically significant relationship to stroke
-* On test, ta VotingClassifier model performed with a 74% recall and a 66% accuracy.
+* On test, the VotingClassifier model performed with a 74% recall and a 66% accuracy.
 
 ## Recommendations
 * Acquire more health and demographic data
